@@ -17,6 +17,7 @@
     "typescript": "^2.9.2"
   },
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "gulp-babel": "^7.0.1"
   }
 }

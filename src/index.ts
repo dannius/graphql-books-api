@@ -1,11 +1,11 @@
 import * as express from 'express';
+import { baseController } from './controllers';
 
+const PORT = process.env.PORT || 3000;
 const app = express();
 
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
+app.use('/', baseController.router)
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+app.listen(PORT, () => {
+  console.log(`listen port ${PORT}`);
 });
