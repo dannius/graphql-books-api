@@ -1,14 +1,11 @@
-import {
-  graphql,
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLSchema
-} from 'graphql';
+import { GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLID } from 'graphql';
+
+import { books } from '../storage';
 
 const BookType = new GraphQLObjectType({
   name: 'Book',
   fields: () => ({
-    id: { type: GraphQLString },
+    id: { type: GraphQLID },
     name: { type: GraphQLString },
     genre: { type: GraphQLString }
   })
@@ -19,10 +16,8 @@ const RootQuery = new GraphQLObjectType({
   fields: {
     book: {
       type: BookType,
-      args: { id: { type: GraphQLString } },
-      resolve(parent, args) {
-
-      }
+      args: { id: { type: GraphQLID } },
+      resolve: (parent, { id }) => books.find((book) => book.id === id)
     }
   }
 });

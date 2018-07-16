@@ -16,7 +16,8 @@ class GraphqlController {
 
   private initSchema() {
     this._schema = graphqpHTTP({
-      schema: rootSchema
+      schema: rootSchema,
+      graphiql: true
     })
   }
 }
