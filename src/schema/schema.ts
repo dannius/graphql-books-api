@@ -1,9 +1,9 @@
 import { authors } from './../storage/authors';
-import { GraphQLID, GraphQLInt, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
+import { GraphQLID, GraphQLInt, GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLList } from 'graphql';
 import { books } from '../storage';
 
 
-const BookType = new GraphQLObjectType({
+const BookType: GraphQLObjectType = new GraphQLObjectType({
   name: 'Book',
   fields: () => ({
     id: { type: GraphQLID },
@@ -16,16 +16,20 @@ const BookType = new GraphQLObjectType({
   })
 });
 
-const AuthorType = new GraphQLObjectType({
+const AuthorType: GraphQLObjectType = new GraphQLObjectType({
   name: 'Author',
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
-    age: { type: GraphQLInt }
+    age: { type: GraphQLInt },
+    books: {
+      type: new GraphQLList(BookType),
+      resolve: ({ id }) => books.filter((book) => book.authorId === id)
+    }
   })
 });
 
-const RootQuery = new GraphQLObjectType({
+const RootQuery: GraphQLObjectType = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
     book: {
@@ -37,6 +41,14 @@ const RootQuery = new GraphQLObjectType({
       type: AuthorType,
       args: { id: { type: GraphQLID } },
       resolve: (parent, { id }) => authors.find((author) => author.id === id)
+    },
+    books: {
+      type: new GraphQLList(BookType),
+      resolve: (parent, args) => books
+    },
+    authors: {
+      type: new GraphQLList(AuthorType),
+      resolve: (parent, args) => authors
     }
   }
 });
