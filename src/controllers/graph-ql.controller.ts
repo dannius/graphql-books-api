@@ -1,4 +1,3 @@
-import { Request, Response, Router } from 'express';
 import * as graphqpHTTP from 'express-graphql';
 import { rootSchema } from '../schema/schema';
 
